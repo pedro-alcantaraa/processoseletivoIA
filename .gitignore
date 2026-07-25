@@ -11,3 +11,9 @@ __pycache__/
 # Ambientes / editores
 .vscode/
 .DS_Store
+
+.venv/
+projetos/3-deteccao-mascaras/model_saved_model/
+projetos/3-deteccao-mascaras/model.onnx
+projetos/3-deteccao-mascaras/calibration_image_sample*.npy
+projetos/3-deteccao-mascaras/runs/

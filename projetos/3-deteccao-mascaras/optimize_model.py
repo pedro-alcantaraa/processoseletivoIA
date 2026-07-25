@@ -1,17 +1,20 @@
+import os
+import shutil
 from ultralytics import YOLO
 
-# ---------------------------------------------------------------------------
-# Projeto 3 — Otimização do Modelo (Exportação para Edge)
-#
-# Requisitos (veja README.md desta pasta para detalhes completos):
-#   1. Carregar o modelo treinado em "model.pt"
-#   2. Exportar para TensorFlow Lite via model.export(format="tflite")
-#      (a Ultralytics gera automaticamente "model.tflite" na mesma pasta)
-# ---------------------------------------------------------------------------
+def main():
+    if not os.path.exists("model.pt"):
+        raise FileNotFoundError("model.pt não encontrado. Rode train_model.py antes.")
 
-# insira seu código aqui
+    model = YOLO("model.pt")
+    exported_path = model.export(format="tflite", imgsz=640)
+    # usa o caminho retornado pela própria função, em vez de um caminho fixo,
+    # pois o nome/local do arquivo exportado pode variar entre versões da Ultralytics
+    shutil.copy(exported_path, "model.tflite")
 
-# Dica de estrutura (não é obrigatório seguir exatamente assim):
-#
-# model = YOLO("model.pt")
-# model.export(format="tflite", imgsz=...)
+    size_mb = os.path.getsize("model.tflite") / (1024 * 1024)
+    print(f"Modelo exportado com sucesso: {exported_path} -> model.tflite")
+    print(f"Tamanho final de model.tflite: {size_mb:.2f} MB")
+
+if __name__ == "__main__":
+    main()

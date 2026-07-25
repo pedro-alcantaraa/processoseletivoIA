@@ -1,22 +1,8 @@
 import os
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 
 from ultralytics import YOLO
-
-# ---------------------------------------------------------------------------
-# Projeto 3 — Inferência com o Modelo Otimizado (model.tflite)
-#
-# Requisitos (veja README.md desta pasta para detalhes completos):
-#   1. Carregar especificamente o "model.tflite" (o artefato de edge, não o
-#      model.pt) usando YOLO(..., task="detect")
-#   2. Rodar inferência em pelo menos 5 imagens do conjunto de validação
-#      (dataset/images/val/), UMA DE CADA VEZ — o model.tflite exportado
-#      aceita apenas 1 imagem por chamada (batch=1), que é aliás o cenário
-#      real de uso em edge (uma foto por vez, não em lote)
-#   3. Imprimir no terminal, para cada amostra, o número de detecções
-#   4. As imagens anotadas com as caixas preditas são salvas automaticamente
-#      pelo Ultralytics em runs/detect/... — abra essa pasta localmente para
-#      conferir visualmente as predições (não precisa ser commitada)
-# ---------------------------------------------------------------------------
 
 N_SAMPLES = 5
 CLASS_NAMES = ["with_mask", "without_mask", "mask_weared_incorrect"]
@@ -27,16 +13,30 @@ def main():
     print("Projeto 3 — Inferência com model.tflite (Edge AI)")
     print("=" * 60)
 
-    # 1. Carregar o modelo TFLite (artefato de edge)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     model_path = os.path.join(script_dir, "model.tflite")
-    model = YOLO(model_path, task="detect")
 
-    # 2. Selecionar imagens do conjunto de validação
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(
+            f"model.tflite não encontrado em {model_path}. "
+            "Rode optimize_model.py antes de executar a inferência."
+        )
+
     val_dir = os.path.join(script_dir, "dataset", "images", "val")
+    if not os.path.isdir(val_dir):
+        raise FileNotFoundError(f"Pasta de validação não encontrada: {val_dir}")
+
     all_images = sorted(
         [f for f in os.listdir(val_dir) if f.lower().endswith((".jpg", ".jpeg", ".png"))]
     )
+    if len(all_images) < N_SAMPLES:
+        raise ValueError(
+            f"Esperava pelo menos {N_SAMPLES} imagens em {val_dir}, encontrou {len(all_images)}."
+        )
+    
+    # carrega especificamente o .tflite (artefato de edge), não o .pt
+    model = YOLO(model_path, task="detect")
+
     sample_images = all_images[:N_SAMPLES]
     sample_paths = [os.path.join(val_dir, f) for f in sample_images]
 
@@ -46,8 +46,9 @@ def main():
 
     total_detections = 0
 
-    # 3. Inferência uma imagem por vez (batch=1 — requisito do tflite em edge)
     for path in sample_paths:
+        # uma imagem por vez (batch=1) — restrição do model.tflite exportado,
+        # e também o cenário real de uso em edge
         result = model.predict(
             source=path,
             imgsz=640,
@@ -61,7 +62,6 @@ def main():
         n_det = len(result.boxes)
         total_detections += n_det
 
-        # Detalhar classes detectadas
         if n_det > 0:
             class_ids = result.boxes.cls.tolist()
             class_counts = {}
