@@ -1,7 +1,9 @@
 ## 📝 Relatório do Candidato
 
-👤 **Nome:** Pedro Henrique Rodrigues De Sá Alcantara
+👤 **Nome Completo:** Pedro Henrique Rodrigues De Sá Alcantara
+
 **Curso:** Ciência da Computação
+
 **Instituição:** Faculdade de Petrolina (Facape)
 
 ---
