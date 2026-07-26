@@ -109,6 +109,8 @@ Uma melhoria futura seria tentar reduzir esse desbalanceamento, com data
 augmentation focado na classe minoritária ou ajustando os pesos da loss por
 classe, pra tentar melhorar o mask_weared_incorrect sem afetar as outras.
 
+Durante a configuração do ambiente de validação automática (CI), enfrentei um conflito de dependências: a Ultralytics tentava atualizar pacotes automaticamente durante a exportação, o que rebaixava o PyTorch para uma versão incompatível com a biblioteca de exportação para TFLite. A solução foi desativar essa auto-atualização (`YOLO_AUTOINSTALL=False`) e fixar manualmente todas as dependências do pipeline de exportação no `requirements.txt`, com base na documentação oficial da Ultralytics. Essa etapa não afetou os artefatos finais entregues, que continuam sendo os gerados localmente.
+
 ---
 
 ### 6️⃣ Exemplo de Inferência
