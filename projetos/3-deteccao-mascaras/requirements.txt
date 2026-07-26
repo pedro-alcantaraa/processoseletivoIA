@@ -1,5 +1,5 @@
 ultralytics==8.4.0 
-torch==2.12.1 t
+torch==2.12.1
 torchvision==0.27.1 
 tensorflow==2.19.0 
 ai-edge-litert 
