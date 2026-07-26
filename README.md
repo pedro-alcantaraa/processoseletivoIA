@@ -34,11 +34,9 @@ Ao final do desenvolvimento, os scripts foram revisados para melhorar a organiza
 | Biblioteca | Versão | Papel no projeto |
 |---|---|---|
 | Ultralytics | 8.4.0 | Framework principal — carregamento do YOLO11n, treinamento, validação e exportação |
-| PyTorch | 2.13.0 (build CPU) | Backend de treinamento do modelo `.pt` |
+| PyTorch | 2.13.0 (build CPU) | Backend de treinamento do modelo `.pt`, usado localmente |
 | TensorFlow | 2.19.0 | Usado internamente pela Ultralytics na conversão para TensorFlow Lite |
 | Python | 3.11.0 | Linguagem de execução dos scripts |
-
-As versões utilizadas foram instaladas automaticamente a partir do arquivo `requirements.txt`, que especifica a dependência `ultralytics>=8.4`. Durante a exportação para TensorFlow Lite, a própria biblioteca instalou automaticamente algumas dependências adicionais necessárias para concluir o processo.
 
 ---
 
