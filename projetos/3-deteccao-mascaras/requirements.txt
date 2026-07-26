@@ -3,4 +3,3 @@ torch==2.12.1 t
 orchvision==0.27.1 
 tensorflow==2.19.0 
 ai-edge-litert 
-litert-torch==0.9.1
