@@ -1,5 +1,6 @@
 import os
 os.environ["YOLO_AUTOINSTALL"] = "False"
+
 import shutil
 from ultralytics import YOLO
 
